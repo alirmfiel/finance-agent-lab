@@ -1,0 +1,12 @@
+Stage 1 preparation only, 2026-10-27.
+Repository cloned using ordinary Git over HTTPS.
+Initial local main and remote main: e1ddaf973bdaf668f6a425f86cdabcaea23d09f1
+Authenticated Git credential identity checked through HTTPS GET /user: alirmfiel
+GET /repos/alirmfiel/finance-agent-lab: permissions.push = true
+Credential values were not printed or written to files.
+Python 3.13.0; pytest 9.1.1.
+Initial test collection failed because finance_tracker module did not exist.
+Final test run: 35 passed.
+No content-based duplicate detection implemented.
+No Issues, PRs, or PATs created. No experimental agent runs performed.
+These preparation logs are not evidence of least privilege or Issue reading.
