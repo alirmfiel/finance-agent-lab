@@ -20,8 +20,20 @@ Dates must be `datetime.date` values; Python rejects impossible calendar dates.
 Only `income` and `expense` types are accepted. Invalid input raises `ValueError`.
 Transactions are immutable; the returned list is a copy in insertion order.
 Balances use Python Decimal arithmetic and its active context.
-There is no content-based duplicate detection: different IDs may have identical content.
-Persistence, CLI, Issues and PRs are outside this baseline.
+An optional fifth `description` argument defaults to `""` and must be a string.
+Different IDs may have identical content; adding them is allowed.
+
+`tracker.find_duplicates(window_days=0)` returns potential duplicate ID pairs
+without changing transactions or balance. Amounts and types must match, and
+descriptions are compared using `" ".join(description.casefold().split())`.
+Stored descriptions remain unchanged. Dates must be within the inclusive number
+of calendar days; the default matches only the same date. The window must be a
+nonnegative integer; booleans and other types raise `ValueError`.
+
+Each unordered pair appears once, with IDs and pairs in transaction insertion
+order. Every pair is compared directly, so date matches are not transitive.
+Detection takes O(n²) comparisons and O(n) working space plus the returned pairs.
+Persistence and a CLI are outside this library's scope.
 
 ## Tests
 
