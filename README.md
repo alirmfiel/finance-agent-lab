@@ -20,8 +20,26 @@ Dates must be `datetime.date` values; Python rejects impossible calendar dates.
 Only `income` and `expense` types are accepted. Invalid input raises `ValueError`.
 Transactions are immutable; the returned list is a copy in insertion order.
 Balances use Python Decimal arithmetic and its active context.
-There is no content-based duplicate detection: different IDs may have identical content.
-Persistence, CLI, Issues and PRs are outside this baseline.
+Transactions accept an optional string `description` as the fifth argument or a
+keyword, defaulting to `""`. Non-string descriptions raise `ValueError`.
+Different IDs may have identical content and can still be added.
+
+Use `tracker.find_duplicates(window_days=0)` to find potential repeated entries
+without removing transactions or changing their fields, order, or balance.
+It returns ID pairs in insertion order, with each unordered pair appearing once.
+Pairs must have equal Decimal amounts and types, descriptions equal after
+`" ".join(description.casefold().split())`, and dates at most `window_days`
+calendar days apart (inclusive). Stored descriptions remain unchanged.
+The default matches only the same date; the window must be a nonnegative integer
+(booleans are rejected). Invalid windows raise `ValueError`.
+Each pair is compared directly, so matches do not extend transitively.
+
+```python
+tracker.add(Transaction("food-copy", Decimal("25.500"), date(2026, 10, 28), "expense"))
+print(tracker.find_duplicates(window_days=1))  # [('food', 'food-copy')]
+```
+
+Persistence and CLI are outside this library.
 
 ## Tests
 
